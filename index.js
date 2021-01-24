@@ -22,10 +22,10 @@ const
 		script:  argv.shift(),
 		dstRawP: argv.shift(), 
 		srcPN:   process.cwd(),
-		mixRaport: argv.includes("-mx") 
+		mixReport: argv.includes("-mx") 
 			|| argv.includes("-mix") 
 			|| argv.includes("--mix"),
-		sortRaport: argv.includes("-st") 
+		sortReport: argv.includes("-st") 
 			|| argv.includes("-sort") 
 			|| argv.includes("--sort"),
 		backup: argv.includes("-bc") 
@@ -100,7 +100,42 @@ else {
 			sorted = sortByChange(changes),
 			rootHeader = `${o.srcPN} (${o.dstPN})`
 
-		console.log(drawFT.createText(changes, o.srcName));
+		// console.log(drawFT.createText(changes, o.srcName));
+
+		if (o.sortReport) {
+			console.log([
+				``,
+				`Added '+' ${sorted.add.length}`,
+				drawFT.createText(sorted.add, o.srcName),
+				`Deleted '-' ${sorted.del.length}`,
+				drawFT.createText(sorted.del, o.srcName),
+				`Modified '!' ${sorted.mod.length}`,
+				drawFT.createText(sorted.mod, o.srcName),
+			].join("\n"));
+		} else {
+			console.log([
+				``,
+				`All changes : ${changes.length}`,
+				drawFT.createText(changes, o.srcName),
+			].join("\n"));
+		}
+
+		console.log([
+			`Compare time : ${compareTime} sec.`,
+			``,
+		].join("\n"));
+
+		if (100 < changes.length) {
+			console.log([
+				`${(new Date(Date.now())).toString()}    ${dateStr}`,
+				`Compare time : ${compareTime} sec.`,
+				` All changes : ${changes.length}`,
+				`     add '+' : ${sorted.add.length}`,
+				`     del '-' : ${sorted.del.length}`,
+				`     mod '!' : ${sorted.mod.length}`,
+				``,
+			].join("\n"));
+		}
 
 		// setInterval(function(){}, 5 * 1000); // To debugging
 	})()
