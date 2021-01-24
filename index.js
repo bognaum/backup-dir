@@ -89,6 +89,7 @@ else {
 						` will be created autumatically.`,
 					``,
 				].join("\n"));
+				return;
 			}
 		}
 
@@ -137,10 +138,84 @@ else {
 			].join("\n"));
 		}
 
-		// setInterval(function(){}, 5 * 1000); // To debugging
+		if (o.backup) {
+			const 
+				txtLogPN  = path.join(o.commitPN, "log.txt"),
+				jsonLogPN = path.join(o.commitPN, "log.json"),
+				modPath   = path.join(o.commitPN, "modified"),
+				delPath   = path.join(o.commitPN, "deleted");
+
+			if (! fs.existsSync(o.dstDifPN))
+				await fspr.mkdir(o.dstDifPN).catch(console.error);
+
+			await fspr.mkdir(o.commitPN).catch(console.error);
+
+			const txtLogDs = await fspr.open(txtLogPN, "w");
+			txtLogDs.write([
+				`${(new Date(Date.now())).toString()}    ${dateStr}`,
+				`Compare time : ${compareTime} sec.`,
+				` All changes : ${changes.length}`,
+				`     add '+' : ${sorted.add.length}`,
+				`     del '-' : ${sorted.del.length}`,
+				`     mod '!' : ${sorted.mod.length}`,
+				``,
+				`Added '+' ${sorted.add.length}`,
+				drawFT.createText(sorted.add, o.srcName),
+				`Deleted '-' ${sorted.del.length}`,
+				drawFT.createText(sorted.del, o.srcName),
+				`Modified '!' ${sorted.mod.length}`,
+				drawFT.createText(sorted.mod, o.srcName),
+			].join("\r\n"));
+			txtLogDs.close();
+
+			const jsonLogDs = await fspr.open(jsonLogPN, "w");
+			jsonLogDs.write(JSON.stringify({
+				meta: {
+					dataTime: dateStr,
+					summary: {
+						all: changes.length,
+						add: sorted.add.length,
+						del: sorted.del.length,
+						mod: sorted.mod.length,
+					},
+					changes: sorted
+				}
+			}, null, 4));
+			jsonLogDs.close();
+
+			if (sorted.mod.length) {
+				await fspr.mkdir(modPath);
+				await copyList(sorted.mod, o.dstPN, modPath);
+			}
+			if (sorted.del.length) {
+				await fspr.mkdir(delPath);
+				await copyList(sorted.del, o.dstPN, delPath);
+			}
+
+			await diffFT.applyRight(o.srcPN, o.dstPN, changes).
+				catch(console.error);
+
+			console.log("\n done \n");
+		}
 	})()
 
 	// console.log(`o`, o);
+}
+
+async function copyList(list, fromP, toP) {
+	for (let subj of list) {
+		const 
+			srcP = path.join(fromP, subj.path),
+			destP = path.join(toP, subj.path);
+		if (subj.type == "file") {
+			await fspr.mkdir(path.dirname(destP), {recursive: true});
+			await pr(fs.copyFile, srcP, destP);
+		} else if (subj.type == "dir") {
+			await fspr.mkdir(destP, {recursive: true});
+		} else {
+			throw new Error("subj.type = "+subj.type);
+		}
+	}
 }
 
 function sortByChange(changes) {
