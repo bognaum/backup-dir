@@ -63,13 +63,17 @@ else {
 			].join("\n"));
 			return;
 		}
-		console.log(
-			"\n\n",(new Date(Date.now()).toString()), "  ", dateStr, "\n",
-			"it compares:\n", 
-			"    ", o.srcPN, "\n",
-			"with:\n", 
-			"    ", o.dstPN
-		);
+
+		console.log([
+			``,
+			`${(new Date(Date.now())).toString()}    ${dateStr}`,
+			``,
+			`it compares:`,
+			`    ${o.srcPN}`,
+			`with:`,
+			`    ${o.dstPN}`,
+			``,
+		].join("\n"));
 
 		if (! fs.existsSync(o.dstPN)) {
 			if (o.backup) {
