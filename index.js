@@ -36,7 +36,11 @@ const
 			|| argv.includes("--backup"),
 	};
 
-console.log(`dateStr`, dateStr);
+o.srcName  = path.basename(o.srcPN);
+o.dstPN    = path.join(o.dstP, o.srcName);
+o.dstDifPN = o.dstPN + ".###";
+o.commitPN = path.join(o.dstDifPN, dateStr);
+
 console.log(`o`, o);
 
 function pS0(subj, len=2) {
