@@ -1,0 +1,14 @@
+{
+  "name": "bcpdir",
+  "version": "1.0.0",
+  "description": "Backup folders.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bogdan Naumenko",
+  "license": "ISC",
+  "dependencies": {
+    "diff-file-tree": "^2.4.0"
+  }
+}
