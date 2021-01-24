@@ -30,10 +30,9 @@ const
 		backup: argv.includes("-bc") 
 			|| argv.includes("-backup") 
 			|| argv.includes("--backup"),
-		test: argv.includes("-test"),
 	};
 
-if (o.test)
+if (test)
 	setInterval(function(){}, 5 * 1000); // To debugging
 
 // setInterval(function(){}, 5 * 1000); // To debugging

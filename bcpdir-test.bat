@@ -1,1 +1,1 @@
-cmd /K supervisor --inspect -n error -- %~dp0\index.js %* -test
+cmd /K supervisor --inspect -n error --watch %~dp0 -- %~dp0\bcpdir-test.js %*
