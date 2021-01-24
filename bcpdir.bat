@@ -1,2 +1,2 @@
 @echo off
-node %~dp0index.js %CD% %*
+node %~dp0index.js %*

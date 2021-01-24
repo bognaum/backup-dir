@@ -19,8 +19,8 @@ const
 	o = {
 		engine:  argv.shift(),
 		script:  argv.shift(),
-		srcPN:   argv.shift(),
 		dstRawP: argv.shift(), 
+		srcPN:   process.cwd(),
 		mixRaport: argv.includes("-mx") 
 			|| argv.includes("-mix") 
 			|| argv.includes("--mix"),
