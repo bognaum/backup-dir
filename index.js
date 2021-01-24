@@ -1,8 +1,9 @@
 const 
-	dft  = require('diff-file-tree'),
+	diffFT  = require('diff-file-tree'),
 	path = require("path"),
 	fs   = require("fs"),
-	fspr = fs.promises;
+	fspr = fs.promises,
+	drawFT = require("./draw-f-tree.js");
 
 const 
 	date = new Date(Date.now()),
@@ -91,12 +92,56 @@ else {
 			}
 		}
 
+		const 
+			timestamp = Date.now(),
+			changes   = await diffFT.diff(o.srcPN, o.dstPN),
+			ts2       = Date.now(),
+			compareTime = getToMinSec((ts2 - timestamp) / 1000),
+			sorted = sortByChange(changes),
+			rootHeader = `${o.srcPN} (${o.dstPN})`
+
+		console.log(drawFT.createText(changes, o.srcName));
+
 		// setInterval(function(){}, 5 * 1000); // To debugging
 	})()
 
 	// console.log(`o`, o);
 }
 
+function sortByChange(changes) {
+	const sorted = {
+		add: [],
+		mod: [],
+		del: [],
+	}
+	for (let fso of changes) {
+		sorted[fso.change].push(fso);
+	}
+	return sorted;
+}
+
+function getToMinSec(seconds) {
+	var h, m, s, ms, rest = seconds, arr;
+	[h, rest] = div(rest, 3600);
+	[m, rest] = div(rest, 60);
+	[s, rest] = div(rest, 1);
+	ms = Math.round(rest * 1000);
+
+	arr = [h, (""+m).padStart(2, "0"), (""+s).padStart(2, "0")];
+
+	if (!arr[0])
+		arr.shift();
+
+	return arr.join(":") + "." + (""+ms).padStart(3, "0");
+
+	function div(a, b) {
+		var
+			rest = a % b,
+			n = (a - rest) / b;
+		rest = Math.round(rest * 1000) / 1000;
+		return [n, rest];
+	}
+}
 
 function pS0(subj, len=2) {
 	return subj.toString().padStart(len, "0");

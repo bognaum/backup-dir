@@ -21,7 +21,7 @@ exports.createText = createText;
 function createText(dftList, rootName) {
 	const 
 		context = {
-			text: "\n\n",
+			text: "\n",
 			isContainer,
 			getPath,
 			addHeader,
@@ -51,12 +51,9 @@ function createText(dftList, rootName) {
 			m.change == "del" ? " -":
 			m.change == "mod" ? " !":
 				"  ";
-		/*if (m.change)
-			this.text += `[${m.change}]`
-			// this.text += `|${m.change}|`
-		else
-			this.text += `     `;*/
 		this.text += ` ${m.name}`;
+		if (m.ch)
+			this.text += " /";
 	}
 	function addBranchEl(type, m) {
 		this.text += 
