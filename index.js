@@ -1,5 +1,3 @@
-setInterval(function(){}, 5 * 1000); // To debugging
-
 console.log("\n\n",(new Date(Date.now()).toString()));
 
 const 
@@ -21,10 +19,10 @@ const
 const 
 	argv = process.argv.map(v => v),
 	o = {
-		engine: argv.shift(),
-		script: argv.shift(),
-		srcPN:  argv.shift(),
-		dstP:   argv.shift(), 
+		engine:  argv.shift(),
+		script:  argv.shift(),
+		srcPN:   argv.shift(),
+		dstRawP: argv.shift(), 
 		mixRaport: argv.includes("-mx") 
 			|| argv.includes("-mix") 
 			|| argv.includes("--mix"),
@@ -36,10 +34,17 @@ const
 			|| argv.includes("--backup"),
 	};
 
+o.dstP     = path.isAbsolute(o.dstRawP) ? 
+	o.dstRawP : 
+	path.join(o.srcPN, o.dstRawP);
 o.srcName  = path.basename(o.srcPN);
 o.dstPN    = path.join(o.dstP, o.srcName);
 o.dstDifPN = o.dstPN + ".###";
 o.commitPN = path.join(o.dstDifPN, dateStr);
+
+(async function () {
+	// setInterval(function(){}, 5 * 1000); // To debugging
+})()
 
 console.log(`o`, o);
 
