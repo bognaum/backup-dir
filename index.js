@@ -1,5 +1,3 @@
-console.log("\n\n",(new Date(Date.now()).toString()));
-
 const 
 	dft  = require('diff-file-tree'),
 	path = require("path"),
@@ -32,22 +30,55 @@ const
 		backup: argv.includes("-bc") 
 			|| argv.includes("-backup") 
 			|| argv.includes("--backup"),
+		test: argv.includes("-test"),
 	};
 
-o.dstP     = path.isAbsolute(o.dstRawP) ? 
-	o.dstRawP : 
-	path.join(o.srcPN, o.dstRawP);
-o.srcName  = path.basename(o.srcPN);
-o.dstPN    = path.join(o.dstP, o.srcName);
-o.dstDifPN = o.dstPN + ".###";
-o.commitPN = path.join(o.dstDifPN, dateStr);
+if (o.test)
+	setInterval(function(){}, 5 * 1000); // To debugging
 
-(async function () {
-	// setInterval(function(){}, 5 * 1000); // To debugging
-})()
+// setInterval(function(){}, 5 * 1000); // To debugging
 
-console.log(`o`, o);
+if (! o.dstRawP)
+	printHelp();
+else {
+
+	console.log(`o`, o);
+
+	o.dstP     = path.isAbsolute(o.dstRawP) ? 
+		o.dstRawP : 
+		path.join(o.srcPN, o.dstRawP);
+	o.srcName  = path.basename(o.srcPN);
+	o.dstPN    = path.join(o.dstP, o.srcName);
+	o.dstDifPN = o.dstPN + ".###";
+	o.commitPN = path.join(o.dstDifPN, dateStr);
+
+
+
+	(async function () {
+		console.log("\n\n",(new Date(Date.now()).toString()), "  ", dateStr, "\n");
+
+		// setInterval(function(){}, 5 * 1000); // To debugging
+	})()
+
+	console.log(`o`, o);
+}
+
 
 function pS0(subj, len=2) {
 	return subj.toString().padStart(len, "0");
+}
+
+function printHelp() {
+	console.log([
+		"",
+		"    bcpdir <dst-path> [-bc | -bakcup | --backup]",
+		"",
+		"bcpdir <dst-path>          : Compare current folder with a folder,",
+		"                              that hac the <dst-path> path, ",
+		"                              and as name as the current folder.",
+		"                              It path may be absolute or relative.",
+		"",
+		"-bc, -backup, --backup     : Apply changes to backup copy.",
+		"",
+	].join("\n"));
 }
