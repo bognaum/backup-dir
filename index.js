@@ -35,13 +35,15 @@ const
 if (test)
 	setInterval(function(){}, 5 * 1000); // To debugging
 
+
+
 // setInterval(function(){}, 5 * 1000); // To debugging
 
 if (! o.dstRawP)
 	printHelp();
 else {
 
-	console.log(`o`, o);
+	// console.log(`o`, o);
 
 	o.dstP     = path.isAbsolute(o.dstRawP) ? 
 		o.dstRawP : 
@@ -51,9 +53,16 @@ else {
 	o.dstDifPN = o.dstPN + ".###";
 	o.commitPN = path.join(o.dstDifPN, dateStr);
 
-
-
 	(async function () {
+		if (! fs.existsSync(o.dstP)) {
+			console.log([
+				``,
+				`The path "${o.dstP}" is not exists.`,
+				`Pleas set an existed path.`,
+				``,
+			].join("\n"));
+			return;
+		}
 		console.log(
 			"\n\n",(new Date(Date.now()).toString()), "  ", dateStr, "\n",
 			"it compares:\n", 
@@ -62,10 +71,26 @@ else {
 			"    ", o.dstPN
 		);
 
+		if (! fs.existsSync(o.dstPN)) {
+			if (o.backup) {
+				await fspr.mkdir(o.dstPN).
+				catch(console.error);
+			} else {
+				console.log([
+					``,
+					`The "${o.dstPN}" folder is not exists.`,
+					`You may use flag "-bc" or "--backup",` + 
+						` and the "${o.dstPN}" folder` + 
+						` will be created autumatically.`,
+					``,
+				].join("\n"));
+			}
+		}
+
 		// setInterval(function(){}, 5 * 1000); // To debugging
 	})()
 
-	console.log(`o`, o);
+	// console.log(`o`, o);
 }
 
 
