@@ -87,3 +87,15 @@ function printHelp() {
 		"",
 	].join("\n"));
 }
+
+function pr(x, name="") {
+	return function (...args) {
+		return new Promise((rs, rj) => {
+			const callb = (e,r) => e ? rj(e) : rs(r)
+			if (name)
+				x[name](...args, callb);
+			else
+				x(...args, callb);
+		});
+	}
+}
