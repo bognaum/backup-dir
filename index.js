@@ -55,7 +55,13 @@ else {
 
 
 	(async function () {
-		console.log("\n\n",(new Date(Date.now()).toString()), "  ", dateStr, "\n");
+		console.log(
+			"\n\n",(new Date(Date.now()).toString()), "  ", dateStr, "\n",
+			"it compares:\n", 
+			"    ", o.srcPN, "\n",
+			"with:\n", 
+			"    ", o.dstPN
+		);
 
 		// setInterval(function(){}, 5 * 1000); // To debugging
 	})()
