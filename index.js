@@ -197,7 +197,7 @@ else {
 				add: sorted.add,
 				del: sorted.del,
 				mod: sorted.mod,
-			}, null, 4));
+			}, null, 4) + "\n , \n");
 			commonJsonLogDs.close();
 
 			if (sorted.mod.length) {
