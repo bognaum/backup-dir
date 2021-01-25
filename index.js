@@ -142,6 +142,7 @@ else {
 			const 
 				txtLogPN  = path.join(o.commitPN, "log.txt"),
 				jsonLogPN = path.join(o.commitPN, "log.json"),
+				errLogPN  = path.join(o.commitPN, "error-log.txt"),
 				modPath   = path.join(o.commitPN, "modified"),
 				delPath   = path.join(o.commitPN, "deleted");
 
@@ -193,7 +194,16 @@ else {
 			}
 
 			await diffFT.applyRight(o.srcPN, o.dstPN, changes).
-				catch(console.error);
+				catch(async function (err) {
+					console.error(err);
+					const errLogDs = await fspr.open(errLogPN, "a");
+					errLogDs.write([
+						``,
+						`${err}`,
+						``,
+					].join("\r\n"));
+					errLogDs.close();
+				});
 
 			console.log("\n done \n");
 		}
