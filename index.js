@@ -53,6 +53,7 @@ else {
 	o.dstPN    = path.join(o.dstP, o.srcName);
 	o.dstDifPN = o.dstPN + ".###";
 	o.commitPN = path.join(o.dstDifPN, dateStr);
+	o.commonJsonLogPN = path.join(o.dstDifPN, "log.json");
 
 	(async function () {
 		if (! fs.existsSync(o.dstP)) {
@@ -183,6 +184,21 @@ else {
 				}
 			}, null, 4));
 			jsonLogDs.close();
+
+			const commonJsonLogDs = await fspr.open(o.commonJsonLogPN, "a");
+			commonJsonLogDs.write(JSON.stringify({
+				dataTime: dateStr,
+				summary: {
+					all: changes.length,
+					add: sorted.add.length,
+					del: sorted.del.length,
+					mod: sorted.mod.length,
+				},
+				add: sorted.add,
+				del: sorted.del,
+				mod: sorted.mod,
+			}, null, 4));
+			commonJsonLogDs.close();
 
 			if (sorted.mod.length) {
 				await fspr.mkdir(modPath);
