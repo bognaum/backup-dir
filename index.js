@@ -286,14 +286,19 @@ function pS0(subj, len=2) {
 function printHelp() {
 	console.log([
 		"",
-		"    budir <dst-path> [-bc | -bakcup | --backup]",
+		"    budir <dst-path> [-bc | -bakcup | --backup]" + 
+			" [-st | -sort | --sort]",
 		"",
-		"budir <dst-path>          : Compare current folder with a folder,",
+		"budir <dst-path>           : Compare current folder with a folder,",
 		"                              that hac the <dst-path> path, ",
 		"                              and as name as the current folder.",
 		"                              It path may be absolute or relative.",
 		"",
-		"-bc, -backup, --backup     : Apply changes to backup copy.",
+		"-bc, -backup, --backup     : Apply changes to backup copy." + 
+			" Add changes to logs.",
+		"",
+		"-st, -sort, --sort         : Sort the input of changes" + 
+			" as add, del, mod.",
 		"",
 	].join("\n"));
 }
