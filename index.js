@@ -35,8 +35,9 @@ const
 
 if ("test" in global && test) {
 	setInterval(function(){}, 5 * 1000); // To debugging
+	console.log("\n");
 	for (let i in o) 
-		console.log(i, ":", o[i]);
+			console.log(i.padStart(20), ":", o[i]);
 }
 
 
@@ -58,8 +59,11 @@ else {
 	o.commitPN = path.join(o.dstDifPN, dateStr);
 	o.commonJsonLogPN = path.join(o.dstDifPN, "log.json");
 
-	if ("test" in global && test) 
-		console.log(`o`, o);
+	if ("test" in global && test) {
+		console.log("\n");
+		for (let i in o) 
+			console.log(i.padStart(20), ":", o[i]);
+	}
 
 	(async function () {
 		if (! fs.existsSync(o.dstP)) {
