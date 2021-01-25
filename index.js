@@ -33,7 +33,7 @@ const
 			|| argv.includes("--backup"),
 	};
 
-if (test)
+if ("test" in global && test)
 	setInterval(function(){}, 5 * 1000); // To debugging
 
 
