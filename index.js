@@ -286,9 +286,9 @@ function pS0(subj, len=2) {
 function printHelp() {
 	console.log([
 		"",
-		"    bcpdir <dst-path> [-bc | -bakcup | --backup]",
+		"    budir <dst-path> [-bc | -bakcup | --backup]",
 		"",
-		"bcpdir <dst-path>          : Compare current folder with a folder,",
+		"budir <dst-path>          : Compare current folder with a folder,",
 		"                              that hac the <dst-path> path, ",
 		"                              and as name as the current folder.",
 		"                              It path may be absolute or relative.",
