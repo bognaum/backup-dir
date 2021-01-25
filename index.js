@@ -241,7 +241,7 @@ else {
 				backupTime = getToMinSec((ts3 - ts2) / 1000);
 			console.log([
 				``,
-				`Backup time : ${compareTime} sec.`,
+				`Backup time : ${backupTime} sec.`,
 				``,
 			].join("\n"));
 
