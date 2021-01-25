@@ -222,7 +222,7 @@ else {
 				await copyList(sorted.del, o.dstPN, delPath);
 			}
 
-			console.log(`Coping all changes to "${o.dstPN}" ...`);
+			console.log(`Transferring all changes to "${o.dstPN}" ...`);
 			await diffFT.applyRight(o.srcPN, o.dstPN, changes).
 				catch(async function (err) {
 					console.error(err);
