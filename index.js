@@ -172,16 +172,16 @@ else {
 
 			const jsonLogDs = await fspr.open(jsonLogPN, "w");
 			jsonLogDs.write(JSON.stringify({
-				meta: {
-					dataTime: dateStr,
-					summary: {
-						all: changes.length,
-						add: sorted.add.length,
-						del: sorted.del.length,
-						mod: sorted.mod.length,
-					},
-					changes: sorted
-				}
+				dataTime: dateStr,
+				summary: {
+					all: changes.length,
+					add: sorted.add.length,
+					del: sorted.del.length,
+					mod: sorted.mod.length,
+				},
+				add: sorted.add,
+				del: sorted.del,
+				mod: sorted.mod,
 			}, null, 4));
 			jsonLogDs.close();
 
