@@ -146,6 +146,7 @@ else {
 		}
 
 		if (o.backup) {
+			console.log("Creating logs ...");
 			const 
 				txtLogPN  = path.join(o.commitPN, "log.txt"),
 				jsonLogPN = path.join(o.commitPN, "log.json"),
@@ -207,17 +208,21 @@ else {
 			commonJsonLogDs.close();
 
 			if (sorted.mod.length) {
+				console.log("Saving modified ...");
 				await fspr.mkdir(modPath);
 				await copyList(sorted.mod, o.dstPN, modPath);
 			}
 			if (sorted.del.length) {
+				console.log("Saving deleted ...");
 				await fspr.mkdir(delPath);
 				await copyList(sorted.del, o.dstPN, delPath);
 			}
 
+			console.log(`Coping all changes to "${o.dstPN}" ...`);
 			await diffFT.applyRight(o.srcPN, o.dstPN, changes).
 				catch(async function (err) {
 					console.error(err);
+					console.log(`The error stored to "${errLogPN}" ...`);
 					const errLogDs = await fspr.open(errLogPN, "a");
 					errLogDs.write([
 						``,
@@ -226,6 +231,15 @@ else {
 					].join("\r\n"));
 					errLogDs.close();
 				});
+
+			const 
+				ts3 = Date.now(),
+				backupTime = getToMinSec((ts3 - ts2) / 1000);
+			console.log([
+				``,
+				`Backup time : ${compareTime} sec.`,
+				``,
+			].join("\n"));
 
 			console.log("\n done \n");
 		}
