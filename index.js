@@ -33,8 +33,11 @@ const
 			|| argv.includes("--backup"),
 	};
 
-if ("test" in global && test)
+if ("test" in global && test) {
 	setInterval(function(){}, 5 * 1000); // To debugging
+	for (let i in o) 
+		console.log(i, ":", o[i]);
+}
 
 
 
@@ -54,6 +57,9 @@ else {
 	o.dstDifPN = o.dstPN + ".###";
 	o.commitPN = path.join(o.dstDifPN, dateStr);
 	o.commonJsonLogPN = path.join(o.dstDifPN, "log.json");
+
+	if ("test" in global && test) 
+		console.log(`o`, o);
 
 	(async function () {
 		if (! fs.existsSync(o.dstP)) {
