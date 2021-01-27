@@ -3,6 +3,7 @@ const
 	path = require("path"),
 	fs   = require("fs"),
 	fspr = fs.promises,
+	cliP = require("cli-progress"),
 	drawFT = require("./draw-f-tree.js");
 
 const 
@@ -223,18 +224,8 @@ else {
 			}
 
 			console.log(`Transferring all changes to "${o.dstPN}" ...`);
-			await diffFT.applyRight(o.srcPN, o.dstPN, changes).
-				catch(async function (err) {
-					console.error(err);
-					console.log(`The error stored to "${errLogPN}" ...`);
-					const errLogDs = await fspr.open(errLogPN, "a");
-					errLogDs.write([
-						``,
-						`${err}`,
-						``,
-					].join("\r\n"));
-					errLogDs.close();
-				});
+
+			await applyChanges(o.srcPN, o.dstPN, changes, errLogPN);
 
 			const 
 				ts3 = Date.now(),
@@ -252,20 +243,63 @@ else {
 	// console.log(`o`, o);
 }
 
+async function applyChanges (srcP, dstP, changes, errLogPN) {
+	const pBar = new cliP.SingleBar({
+		format: " {bar} {percentage}% {value}/{total} {path}",
+		barCompleteChar: '\u2588',
+		barIncompleteChar: '\u2591',
+		hideCursor: false,
+		// clearOnComplete: true,
+		barsize: 20,
+		linewrap: true, // Если 'true' - не выводит ту часть строки, что не влезла в окно.
+	});
+	pBar.start(changes.length, 0);
+	for (let [n, change] of changes.entries()) {
+		pBar.update(n, {path: change.path});
+		// console.log(`change`, change);
+		await diffFT.applyRight(srcP, dstP, [change]).
+			catch(async function (err) {
+				// console.error(err);
+				const errLogDs = await fspr.open(errLogPN, "a");
+				errLogDs.write([
+					``,
+					`${err}`,
+					``,
+				].join("\r\n"));
+				errLogDs.close();
+			});
+		pBar.update(n + 1, {path: ""});
+	}
+	pBar.stop();
+}
+
 async function copyList(list, fromP, toP) {
-	for (let subj of list) {
+	const pBar = new cliP.SingleBar({
+		format: " {bar} {percentage}% {value}/{total} {path}",
+		barCompleteChar: '\u2588',
+		barIncompleteChar: '\u2591',
+		hideCursor: false,
+		// clearOnComplete: true,
+		barsize: 20,
+		linewrap: true, // Если 'true' - не выводит ту часть строки, что не влезла в окно.
+	});
+	pBar.start(list.length, 0);
+	for (let [n, subj] of list.entries()) {
+		pBar.update(n, {path: subj.path});
 		const 
 			srcP = path.join(fromP, subj.path),
 			destP = path.join(toP, subj.path);
 		if (subj.type == "file") {
 			await fspr.mkdir(path.dirname(destP), {recursive: true});
-			await pr(fs.copyFile)(srcP, destP);
+			await pr(fs.copyFile, srcP, destP);
 		} else if (subj.type == "dir") {
 			await fspr.mkdir(destP, {recursive: true});
 		} else {
 			throw new Error("subj.type = "+subj.type);
 		}
+		pBar.update(n + 1, {path: ""});
 	}
+	pBar.stop();
 }
 
 function sortByChange(changes) {

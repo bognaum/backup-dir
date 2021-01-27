@@ -9,6 +9,7 @@
   "author": "Bogdan Naumenko",
   "license": "ISC",
   "dependencies": {
+    "cli-progress": "^3.8.2",
     "diff-file-tree": "^2.4.0"
   }
 }
