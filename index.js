@@ -245,6 +245,8 @@ else {
 					``,
 				].join("\n"));
 				const treeLog = drawFT.createText(failedChanges, o.srcName);
+				if (100 < treeLog.length && 10 < treeLog.split("\n").length)
+					console.log(treeLog);
 				const errLogDs = await fspr.open(errLogPN, "a");
 				errLogDs.write(treeLog);
 				errLogDs.close();
