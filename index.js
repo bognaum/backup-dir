@@ -259,7 +259,7 @@ async function applyChanges (srcP, dstP, changes, errLogPN) {
 		// console.log(`change`, change);
 		await diffFT.applyRight(srcP, dstP, [change]).
 			catch(async function (err) {
-				// console.error(err);
+				failedChanges.push(change);
 				const errLogDs = await fspr.open(errLogPN, "a");
 				errLogDs.write([
 					``,
