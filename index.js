@@ -34,6 +34,8 @@ const
 			|| argv.includes("--backup"),
 	};
 
+const failedChanges = [];
+
 if ("test" in global && test) {
 	setInterval(function(){}, 5 * 1000); // To debugging
 	console.log("\n");
@@ -235,6 +237,18 @@ else {
 				`Backup time : ${backupTime} sec.`,
 				``,
 			].join("\n"));
+
+			if (failedChanges.length) {
+				console.log([
+					``,
+					`Errors : ${failedChanges.length}`,
+					``,
+				].join("\n"));
+				const treeLog = drawFT.createText(failedChanges, o.srcName);
+				const errLogDs = await fspr.open(errLogPN, "a");
+				errLogDs.write(treeLog);
+				errLogDs.close();
+			}
 
 			console.log("\n done \n");
 		}
