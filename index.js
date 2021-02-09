@@ -136,14 +136,14 @@ else {
 		}
 
 		console.log([
-			`Compare time : ${compareTime} sec.`,
+			`Compare time : ${compareTime}`,
 			``,
 		].join("\n"));
 
 		if (100 < changes.length) {
 			console.log([
 				`${(new Date(Date.now())).toString()}    ${dateStr}`,
-				`Compare time : ${compareTime} sec.`,
+				`Compare time : ${compareTime}`,
 				` All changes : ${changes.length}`,
 				`     add '+' : ${sorted.add.length}`,
 				`     del '-' : ${sorted.del.length}`,
@@ -169,7 +169,7 @@ else {
 			const txtLogDs = await fspr.open(txtLogPN, "w");
 			txtLogDs.write([
 				`${(new Date(Date.now())).toString()}    ${dateStr}`,
-				`Compare time : ${compareTime} sec.`,
+				`Compare time : ${compareTime}`,
 				` All changes : ${changes.length}`,
 				`     add '+' : ${sorted.add.length}`,
 				`     del '-' : ${sorted.del.length}`,
@@ -234,7 +234,7 @@ else {
 				backupTime = getToMinSec((ts3 - ts2) / 1000);
 			console.log([
 				``,
-				`Backup time : ${backupTime} sec.`,
+				`Backup time : ${backupTime}`,
 				``,
 			].join("\n"));
 
