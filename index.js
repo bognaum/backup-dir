@@ -307,7 +307,7 @@ async function copyList(list, fromP, toP) {
 			destP = path.join(toP, subj.path);
 		if (subj.type == "file") {
 			await fspr.mkdir(path.dirname(destP), {recursive: true});
-			await pr(fs.copyFile, srcP, destP);
+			await pr(fs.copyFile)(srcP, destP);
 		} else if (subj.type == "dir") {
 			await fspr.mkdir(destP, {recursive: true});
 		} else {
