@@ -100,7 +100,7 @@ else {
 					`The "${o.dstPN}" folder is not exists.`,
 					`You may use flag "-bc" or "--backup",` + 
 						` and the "${o.dstPN}" folder` + 
-						` will be created autumatically.`,
+						` will be created automatically.`,
 					``,
 				].join("\n"));
 				return;
