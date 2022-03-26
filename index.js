@@ -23,16 +23,20 @@ const
 		script:  argv.shift(),
 		dstRawP: argv.shift(), 
 		srcPN:   process.cwd(),
-		mixReport: argv.includes("-mx") 
-			|| argv.includes("-mix") 
-			|| argv.includes("--mix"),
-		sortReport: argv.includes("-st") 
-			|| argv.includes("-sort") 
-			|| argv.includes("--sort"),
-		backup: argv.includes("-bc") 
-			|| argv.includes("-backup") 
-			|| argv.includes("--backup"),
 	};
+while (argv.length) {
+	let arg = argv.shift();
+	if (["-mix", "--mix"].includes(arg))
+		o.mixReport = arg;
+	else if (["-sort", "--sort"].includes(arg))
+		o.sortReport = arg;
+	else if (["-bc", "-backup", "--backup"].includes(arg))
+		o.backup = arg;
+	else {
+		console.log("\n\n", `Invalid argument "${arg}"`, "\n\n");
+		throw new Error(`Invalid argument of command line "${arg}"`);
+	}
+}
 
 const failedChanges = [];
 
