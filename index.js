@@ -1,10 +1,10 @@
 const 
 	diffFT  = require('diff-file-tree'),
-	path = require("path"),
-	fs   = require("fs"),
-	fspr = fs.promises,
-	cliP = require("cli-progress"),
-	drawFT = require("./draw-f-tree.js");
+	path    = require("path"),
+	fs      = require("fs"),
+	fspr    = fs.promises,
+	cliP    = require("cli-progress"),
+	drawFT  = require("./draw-f-tree.js");
 
 const 
 	date = new Date(Date.now()),
@@ -112,12 +112,12 @@ else {
 		}
 
 		const 
-			timestamp = Date.now(),
-			changes   = await diffFT.diff(o.srcPN, o.dstPN),
-			ts2       = Date.now(),
+			timestamp   = Date.now(),
+			changes     = await diffFT.diff(o.srcPN, o.dstPN),
+			ts2         = Date.now(),
 			compareTime = getToMinSec((ts2 - timestamp) / 1000),
-			sorted = sortByChange(changes),
-			rootHeader = `${o.srcPN} (${o.dstPN})`
+			sorted      = sortByChange(changes),
+			rootHeader  = `${o.srcPN} (${o.dstPN})`
 
 		// console.log(drawFT.createText(changes, o.srcName));
 
