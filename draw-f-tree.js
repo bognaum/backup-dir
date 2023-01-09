@@ -53,7 +53,7 @@ function createText(dftList, rootName) {
 				"  ";
 		this.text += ` ${m.name}`;
 		if (m.ch)
-			this.text += " /";
+			this.text += "/";
 	}
 	function addBranchEl(type, m) {
 		this.text += 
